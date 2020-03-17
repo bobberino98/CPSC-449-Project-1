@@ -1,0 +1,3 @@
+posts: cd PostAPI && gunicorn3 wsgi:app
+
+accounts: cd UserAccountAPI && gunicorn3 wsgi:app

@@ -4,7 +4,6 @@ import datetime
 import app, model, service
 
 class TestPosts:
-    
     def test_createPosts(**arg):
         URL = 'http://127.0.0.1:5500/create-post'
 
@@ -134,3 +133,5 @@ class TestPosts:
             time.sleep(1)
 
         return passed, resp
+def main():
+    _addPosts()
