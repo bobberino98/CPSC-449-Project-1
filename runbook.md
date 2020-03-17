@@ -17,7 +17,8 @@ If these requirements are not available, a shell script (setup.sh) is provided t
 # Starting the Services
 To start the services, these commands must be run, in separate terminals, from the base directory:
 
-ulimit -n 8192 caddy
+ulimit -n 8192 && caddy
+
 foreman start -m posts=3,accounts=3
 
 There is a shell script (start_server.sh) that will run these commands automatically, opening terimnals for each server
