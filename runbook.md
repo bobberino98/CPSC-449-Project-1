@@ -23,3 +23,24 @@ foreman start -m posts=3,accounts=3
 
 There is a shell script (start_server.sh) that will run these commands automatically, opening terimnals for each server
 
+# Shutting down the Services
+To shut down the servers, simply kill the processes in the terminal by either closing the windows or pressing Ctrl+C.
+
+# Network
+
+| Service      | Port        | Protocol       |
+|--------------|-------------|----------------|
+| posts        | 5000        | TCP - http     |
+| accounts     | 5100        | TCP - http     |
+
+# Filesystem
+
+| Service          | Data                                |
+|------------------|-------------------------------------|
+| posts            | /Dev/PostAPI                        |
+| accounts         | /Dev/UserAccountAPI                 |
+| Post Database    | /Dev/PostAPI/posts.db               |
+| Account Database | /Dev/UserAccountAPI/user_account.db |
+
+
+
