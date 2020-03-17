@@ -4,30 +4,32 @@ curl --verbose \
      -X PUT \
      --header 'Content-Type: application/json' \
      --data @post.json \
-     http://localhost:5000/create-post
+     http://localhost:5000/posts/create-post
 
 
 curl --verbose \
      -X GET \
      --header 'Content-Type: application/json' \
-     --data @post.json \
-     http://localhost:5000/retrieve
+     --data @title.json \
+     http://localhost:5000/posts/retrieve
 
 
 curl --verbose \
-     -X DELETE
-     http://localhost:5000/delete 
-
-
-curl --verbose \
-     -X GET
+     -X POST \
      --header 'Content-Type: application/json' \
-     --data @post.json \
-     http://localhost:5000/list-n-particular
+     --data @title.json \
+     http://localhost:5000/posts/delete 
 
 
 curl --verbose \
-     -X GET
+     -X GET \
      --header 'Content-Type: application/json' \
-     --data @post.json \
-     http://localhost:5000/list-recent
+     --data @list_particular.json \
+     http://localhost:5000/posts/list-n-particular
+
+
+curl --verbose \
+     -X GET \
+     --header 'Content-Type: application/json' \
+     --data @list_recent.json \
+     http://localhost:5000/posts/list-recent
