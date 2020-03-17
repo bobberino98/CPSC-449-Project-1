@@ -1,137 +1,207 @@
 import requests
-import time
 import datetime
-import app, model, service
+import time
 
-class TestPosts:
-    def test_createPosts(**arg):
-        URL = 'http://127.0.0.1:5500/create-post'
 
-        resp = requests.post(URL, data = arg)
+def case_retrievePosts(title):
+    URL = 'http://localhost:5000/retrieve' + f'{title}'
 
-        if resp.status_code == 201:
-            return True, resp.text
+    resp = requests.get(URL)
 
-        else:
-            return False, -1
+    if resp.status_code == 200:
+        obj = resp.json()
+        return True, obj
 
-    def test_listRecents(community, n):
-        URL = 'http://127.0.0.1:5500/list-recents/' + f'{community}?n={n}'
+    else:
+        print('Fail to retrieve the post title {title}!')
+        return false, -1
+    print()
 
-        resp = requests.get(URL)
 
-        if resp.status_code == 200:
-            obj = resp.obj
-            return True,obj
-        else:
-            print (F'Recent post {n} for {community} fail to retrieve')
-            return False, -1
+def case_deletePosts(title):
+    URL = 'http://localhost:5000/delete/' + f'{title}'
 
-        
-    def test_listnParticular(n):
-        URL = 'http://127.0.0.1:5500/list-n-particular?=' + f'{n}'
-        
-        resp = requests.get(URL)
+    resp = requests.delete(URL)
 
-        if resp.status_code == 200:
-            obj = resp.json()
-            return True, obj
-        else: 
+    if resp.status_code == 204:
+        return True
+
+    else:
+        return False
+
+
+def case_listRecentPosts(**arg):
+    URL = 'http://localhost:5000/list-recent'
+    resp = requests.get(URL, data=arg)
+
+    if resp.status_code == 201:
+        obj = resp.json()
+        return True, obj
+
+    else:
+        return False, -1
+
+
+def case_listnParticular(community, n):
+
+    URL = 'http://localhost:5000/list-n-particular/' + f'{community}?n={n}'
+    resp = requests.get(URL)
+
+    if resp.status_code == 200:
+        obj = resp.json()
+        return True, obj
+
+    else:
+        print(f'Fail to retrieve post {n} from {community}!')
+
+
+def _createPosts():
+
+    addInData = [
+        {
+            "title": "title 1",
+            "text": "text 1",
+            "community": "community1",
+            "URL": "www.urlresource1.com",
+            "username": "user 1",
+            "postDate": "02/28/2020"
+        },
+        {
+            "title": "title 2",
+            "text": "text 2",
+            "community": "community2",
+            "URL": "www.urlresource2.com",
+            "username": "user 2",
+            "postDate": "02/27/2020"
+        },
+        {
+            "title": "title 3",
+            "text": "text 3",
+            "community": "community3",
+            "URL": "www.urlresource3.com",
+            "username": "user 3",
+            "postDate": "02/28/2020"
+        },
+        {
+            "title": "title 4",
+            "text": "text 4",
+            "community": "community4",
+            "URL": "www.urlresource4.com",
+            "username": "user 4",
+            "postDate": "02/28/2020"
+        },
+        {
+            "title": "title 5",
+            "text": "text 5",
+            "community": "community5",
+            "URL": "www.urlresource5.com",
+            "username": "user 5",
+            "postDate": "02/29/2020"
+        },
+        {
+            "title": "title 6",
+            "text": "text 6",
+            "community": "community6",
+            "URL": "www.urlresource6.com",
+            "username": "user 6",
+            "postDate": "02/28/2020"
+        },
+        {
+            "title": "title 7",
+            "text": "text 7",
+            "community": "community7",
+            "URL": "www.urlresource7.com",
+            "username": "user 7",
+            "postDate": "02/28/2020"
+        },
+        {
+            "title": "title 8",
+            "text": "text 8",
+            "community": "community8",
+            "URL": "www.urlresource8.com",
+            "username": "user 8",
+            "postDate": "02/28/2020"
+        },
+        {
+            "title": "title 9",
+            "text": "text 9",
+            "community": "community9",
+            "URL": "www.urlresource9.com",
+            "username": "user 9",
+            "postDate": "02/28/2020"
+        },
+    ]
+    for i in addInData:
+       isPassed, resp = case_listRecentPosts(**i)
+       time.sleep(1)
+
+    return isPassed, resp
+
+"""def main():
+    delID = 1
     
-            return False, -1
-        print()
+    isPassed, resp = createPosts()
 
-    def test_deletePosts(title):
-        URL = 'http://127.0.0.1:5500/delete/' + f'{title}'
-        resp = requests.delete(URL)
+    delID = 17 
+    print()
+    print('*'*50)
+    print(f'1. Get post by title at title = {title}')
+    print('*'*50)
+    print()
 
-        if resp.status_code == 204:
-            return True
+    Answer1 = []
+
+    for i in myDB:
+        if i['title'] == title:
+            Answer1.append(i)
+
+    print('Correct result from database:')
+    print(f'Length = {len{Answer1}}')
+    print('Post:')
+    print(f'{Answer1}')
+
+    print('-'*10 + '\n')
+
+    isPassed, postbyTitle = case_listRecentPosts(delID)
+
+    if isPassed and (postbyTitle in myDB):
+        length = 1
+        print('Result from test case\n')
+        print(f'Length = {length}\n')
+        print('Post:')
+        print(f'{postbyTitle}')
+
+        print('-'*10 + '\n')
+        print('Test result : \n'.upprt())
+        print('Test get post by title is successful')
+
+    else:
+        print(f'Fail to get post by title')
+
+    myCommunity = 'community1'
+    n = 3
+
+    print()
+    print('*'*50)
+    print(f'2. Test get post {n} from {myCommunity}')
+    print('*'*50)
+    print()
+
+    Answer=[]
+    i = len(myDB) - 1
+    
+    while i > 0 and len(Answer) < n:
+        if myDB[i]['Community'] == myCommunity:
+            Answer.append(myDB[i])
+            i -= 1
+
         else:
-            return False
+            i -= 1
+
+    print('Correct Answer from database:\n')
+    
+"""
 
 
-    def _addPosts():
-
-        addInData = [
-            {
-                "title": "title1",
-                "text": "text1",
-                "community": "community1",
-                "URL": "www.urlresource1.com",
-                "username": "user1",
-                "postDate": "02/28/2020"
-            }, 
-            {
-                "title": "title2",
-                "text": "text2",
-                "community": "community2",
-                "URL": "www.urlresource2.com",
-                "username": "user2",
-                "postDate": "02/27/2020"
-            }, 
-            {
-                "title": "title3",
-                "text": "text3",
-                "community": "community3",
-                "URL": "www.urlresource3.com",
-                "username": "user3",
-                "postDate": "02/28/2020"
-            }, 
-            {
-                "title": "title4",
-                "text": "text4",
-                "community": "community4",
-                "URL": "www.urlresource4.com",
-                "username": "user4",
-                "postDate": "02/28/2020"
-            }, 
-            {
-                "title": "title5",
-                "text": "text5",
-                "community": "community5",
-                "URL": "www.urlresource5.com",
-                "username": "user5",
-                "postDate": "02/28/2020"
-            }, 
-            {
-                "title": "title6",
-                "text": "text6",
-                "community": "community6",
-                "URL": "www.urlresource6.com",
-                "username": "user6",
-                "postDate": "02/28/2020"
-            }, 
-            {
-                "title": "title7",
-                "text": "text7",
-                "community": "community7",
-                "URL": "www.urlresource7.com",
-                "username": "user7",
-                "postDate": "02/28/2020"
-            }, 
-            {
-                "title": "title8",
-                "text": "text8",
-                "community": "community8",
-                "URL": "www.urlresource8.com",
-                "username": "user8",
-                "postDate": "02/28/2020"
-            }, 
-            {
-                "title": "title9",
-                "text": "text9",
-                "community": "community9",
-                "URL": "www.urlresource9.com",
-                "username": "user9",
-                "postDate": "02/28/2020"
-            }, 
-        ]
-
-        for i in addInData:
-            passed, resp = test_createPosts(**i)
-            time.sleep(1)
-
-        return passed, resp
-def main():
-    _addPosts()
+if __name__ == '__main__':
+    print('test complete')
