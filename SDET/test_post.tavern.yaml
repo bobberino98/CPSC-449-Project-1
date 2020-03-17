@@ -1,0 +1,123 @@
+#posting service#
+
+#positive#
+test_name: Create New Post
+stages: 
+  - name: make sure that the posting is successful
+    request:
+      url: http://locaohost:5000/create-post
+      method: PUT
+      json: 
+        title: helloWorld
+        text :  Hello world 
+        community :  community 1 
+        URL :  www.urlresource.com 
+        username :  449user 
+        postDate :  02/28/2020 
+      headers:
+        content-type:application/json
+        response:
+          status_code : 201
+
+#negative#
+test_name: Post without title and username
+stages: 
+  - name: make sure that it doesn't post without title and username
+
+    request:
+      url: http://locaohost:5000/create-post
+      method: PUT
+      json: 
+        title: hello!
+        community :  community 1 
+        URL :  www.urlresource.com 
+        postDate :  02/28/2020 
+      headers:
+        content-type:application/json
+
+        response:
+          status_code : 409
+
+#negative#
+test_name: Delete a non-existing post
+stages: 
+  - name : make sure that it gets errors when trying to delete a non-existing post
+      request: 
+        url: http://locaohost:5000/delete?title=whatsup
+        method: DELETE
+        headers: 
+          content-type: application/json
+        response:
+          status_code: 404
+
+#positive#
+test_name: retrieve n recents posts with a given community
+stages: 
+  - name: make sure that it retrieves successfully
+    requests: 
+      url: http://localhost:5000/list-n-particular/helloWorld
+      method: GET
+      headers: 
+        content-type: application/json
+      response:
+        status_code: 200
+
+#negative#
+test_name: retrieve recents posts within a non-existing community
+stages: 
+  - name: make sure that it gets an error
+    requests: 
+      url: http://localhost:5000/list-n-particular/hello
+      method: GET
+      headers: 
+        content-type: application/json
+      response:
+        status_code: 404
+
+
+test_name: retrieve recents posts within any community
+stages: 
+  - name: make sure that it gets a successful response
+    requests: 
+      url: http://localhost:5000/list-recent/helloWorld
+      method: GET
+      headers: 
+        content-type: application/json
+      response:
+        status_code: 200
+
+#negative
+test_name: retrieve 0 recents posts within any community
+stages: 
+  - name: make sure that it gets an error when n = 0
+    requests: 
+      url: http://localhost:5000/list-recent?n=0
+      method: GET
+      headers: 
+        content-type: application/json
+      response:
+        status_code: 404
+
+
+test_name: retrieve post with given title
+stages: 
+  - name: make sure that it returns successfully
+    requests: 
+      url: http://localhost:5000/retrieve/helloWorld
+      method: GET
+      headers: 
+        content-type: application/json
+      response:
+        status_code: 200
+
+
+test_name: retrieve post with a non-existing title
+stages: 
+  - name: make sure that it gets an error
+    requests: 
+      url: http://localhost:5000/retrieve/hello
+      method: GET
+      headers: 
+        content-type: application/json
+      response:
+        status_code: 404
