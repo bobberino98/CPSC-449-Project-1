@@ -2,38 +2,41 @@ from locust import HttpLocust, TaskSet, task, between
 import json
 import requests
 from faker import Faker
+from faker.providers import internet
 
 fake = Faker()
 
-username = fake.username()
+username = fake.user_name()
 email = fake.email()
-karma = fake.karma()
+karma = fake.random_int(min=1, max=1000,step=1)
 
-dataUser = {"username":username, "email":email, "karma":karma}
+dataCreateUser = {"user_name": username, "email": email, "karma": karma}
+dataUsername = {"user_name": username}
+dataEmail = {"user_name": username, "email": email}
+
 
 class userTask(TaskSet):
     @task(1)
-    def create_user():
-        self.client.post("/accounts/create-user", json=dataUser)
+    def create_user(self):
+        self.client.put("/accounts/create-user", json=dataCreateUser)
 
     @task(2)
-    def update_email():
-        self.client.post("/accounts/update-email/post?user_name=%d" %{username})
+    def update_email(self):
+        self.client.post("/accounts/update-email", json=dataEmail)
 
     @task(3)
-    def increment_karma():
-        self.client.post("/accounts/increment-karma/post?user_name=%d" %{username})
+    def increment_karma(self):
+        self.client.post("/accounts/increment-karma", json=dataUsername)
 
     @task(3)
-    def decrement_karma():
-        self.client.post("/accounts/decrement-karma/post?user_name=%d" %{username})
+    def decrement_karma(self):
+        self.client.post("/accounts/decrement-karma", json=dataUsername)
 
     @task(4)
-    def deactivate_account():
-        self.client.post("/accounts/deactivate-account/post?user_name=%d" %{username})
+    def deactivate_account(self):
+        self.client.post("/accounts/deactivate-account", json=dataUsername)
 
 
 class websiteUser(HttpLocust):
     task_set = userTask
-    min_wait = 1000
-    max_wait = 2000
+    wait_time = between(2, 5)

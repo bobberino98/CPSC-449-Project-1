@@ -10,7 +10,7 @@ class Schema:
     def create_user_table(self):
 
         query = """
-        CREATE TABLE IF NOT EXISTS "User" (
+        CREATE TABLE "User" (
           username TEXT,
           email TEXT,
           karma INTEGER

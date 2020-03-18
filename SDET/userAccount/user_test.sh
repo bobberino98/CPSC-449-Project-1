@@ -26,5 +26,6 @@ curl --verbose \
 
 curl --verbose \
     -X POST \
+    --header 'Content-Type: application/json' \
     --data @deactivate_account.json \
     http://localhost:2015/accounts/deactivate-account

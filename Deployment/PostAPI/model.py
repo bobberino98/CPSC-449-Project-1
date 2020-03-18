@@ -10,7 +10,7 @@ class Schema:
     def create_posts_table(self):
 
         query = """
-        CREATE TABLE IF NOT EXISTS "Post" (
+        CREATE TABLE "Post" (
           title TEXT,
           "text" TEXT,
           community TEXT,
