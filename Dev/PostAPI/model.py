@@ -36,6 +36,7 @@ class PostModel:
         try:
             self.conn.execute(query)
             return {'message': f'Post with the title:{title} is created!'}
+            self.conn.commit()
         except:
             return {'message': 'Could not create the post'}
     
@@ -45,6 +46,7 @@ class PostModel:
         try:
             self.conn.execute(query)
             return {'message': f'Post with the title:{title} is deleted!'}
+            self.conn.commit()
         except:
             return {'message': 'Could not delete the post'}
     
