@@ -8,10 +8,10 @@ fake = Faker()
 
 # posting
 community_list = [
-    'lollipop', 'poptart', 'icee',
-    'waffle', 'popsicle', 'gummies',
-    'Cookies', 'oatmeal', 'pie',
-    'syrup', 'Beans', 'milk', 'cereals'
+    'hotpot', 'slushies', 'icee',
+    'csuf', 'popmusic', 'dummies',
+    'youtube', 'candy', 'pie',
+    'pancake', 'Popular', 'fans', 'cereals'
 ]
 title = fake.sentence(nb_words=6, variable_nb_words=True, ext_word_list=None)
 text = fake.sentence(nb_words=3, variable_nb_words=True, ext_word_list=None)
@@ -80,4 +80,5 @@ class userTask(TaskSet):
 
 class websiteUser(HttpLocust):
     task_set = userTask
-    wait_time = between(2, 5)
+    min_wait_time = 2000
+    max_wait_time = 5000
